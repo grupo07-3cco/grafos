@@ -28,12 +28,12 @@ ALTURA_UTI = 12
 # Faixas de referência de cada sensor:
 # (mínimo normal, máximo normal, tolerância para "alerta", unidade)
 FAIXAS = {
-    "umidade":     (50.0, 80.0, 5.0, "%"),     # umidade do ar da incubadora
-    "temp_inc":    (36.0, 37.5, 0.5, "°C"),    # temperatura do ar da incubadora
+    "umidade":     (50.0, 65.0, 5.0, "%"),     # umidade do ar da incubadora
+    "temp_inc":    (32.0, 34.0, 0.5, "°C"),    # temperatura do ar da incubadora
     "ruido":       (0.0, 45.0, 10.0, "dB"),    # ruído dentro da incubadora
     "temp_bebe":   (36.5, 37.5, 0.5, "°C"),    # temperatura corporal (pulseira)
-    "oxigenio":    (90.0, 100.0, 5.0, "%"),    # SpO2 (pulseira)
-    "batimento":   (100.0, 160.0, 20.0, "bpm"),  # frequência cardíaca (pulseira)
+    "oxigenio":    (95.0, 100.0, 5.0, "%"),    # SpO2 (pulseira)
+    "batimento":   (120.0, 160.0, 20.0, "bpm"),  # frequência cardíaca (pulseira)
 }
 
 SENSORES_INCUBADORA = ["umidade", "temp_inc", "ruido"]
@@ -228,19 +228,19 @@ def desenhar_grafo(G):
     nx.draw_networkx_edge_labels(G, pos, edge_labels=rotulos_arestas, ax=ax,
                                  font_size=7, font_color="#1f77b4")
 
-    # Nós: formato pelo tipo, cor pelo status
+    # Nós: todos em círculo; o tamanho indica o tipo e a cor indica o status
     def nos_do_tipo(tipo):
         return [n for n, d in G.nodes(data=True) if d["tipo"] == tipo]
 
     def cores(nos):
         return [CORES_STATUS.get(G.nodes[n].get("status"), "#444444") for n in nos]
 
-    nx.draw_networkx_nodes(G, pos, nodelist=nos_do_tipo("servidor"), node_shape="s",
-                           node_size=1400, node_color="#444444", ax=ax)
-    nx.draw_networkx_nodes(G, pos, nodelist=nos_do_tipo("gateway"), node_shape="D",
-                           node_size=1100, node_color="#1f77b4", ax=ax)
+    nx.draw_networkx_nodes(G, pos, nodelist=nos_do_tipo("servidor"), node_shape="o",
+                           node_size=1900, node_color="#444444", ax=ax)
+    nx.draw_networkx_nodes(G, pos, nodelist=nos_do_tipo("gateway"), node_shape="o",
+                           node_size=1800, node_color="#1f77b4", ax=ax)
     incubadoras = nos_do_tipo("incubadora")
-    nx.draw_networkx_nodes(G, pos, nodelist=incubadoras, node_shape="s", node_size=1500,
+    nx.draw_networkx_nodes(G, pos, nodelist=incubadoras, node_shape="o", node_size=1500,
                            node_color=cores(incubadoras), edgecolors="black", ax=ax)
     pulseiras = nos_do_tipo("pulseira")
     nx.draw_networkx_nodes(G, pos, nodelist=pulseiras, node_shape="o", node_size=650,
@@ -262,9 +262,9 @@ def desenhar_grafo(G):
 
     # Legenda
     legenda = [
-        Line2D([], [], marker="s", ls="", color="#444444", ms=10, label="Servidor (posto de enfermagem)"),
-        Line2D([], [], marker="D", ls="", color="#1f77b4", ms=9, label="Gateway"),
-        Line2D([], [], marker="s", ls="", color="#aaaaaa", mec="black", ms=11, label="Incubadora"),
+        Line2D([], [], marker="o", ls="", color="#444444", ms=12, label="Servidor (posto de enfermagem)"),
+        Line2D([], [], marker="o", ls="", color="#1f77b4", ms=12, label="Gateway"),
+        Line2D([], [], marker="o", ls="", color="#aaaaaa", mec="black", ms=11, label="Incubadora"),
         Line2D([], [], marker="o", ls="", color="#aaaaaa", mec="black", ms=9, label="Pulseira (neonato)"),
         Line2D([], [], marker="o", ls="", color="#aaaaaa", ms=6,
                label="Sensor  U/T/R = umidade/temp./ruído  T°/O₂/FC = pulseira"),

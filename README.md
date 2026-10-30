@@ -1,4 +1,4 @@
-# grafos
+# Script Grafos
 
 Grafo de **geolocalização** da UTI Neonatal do projeto de monitoramento de incubadoras e neonatos.
 
@@ -23,13 +23,13 @@ Saídas:
 
 ## O que é o grafo
 
-| Elemento | Tipo de nó | Formato no desenho |
+| Elemento | Tipo de nó | No desenho |
 |---|---|---|
-| Servidor (posto de enfermagem) | `servidor` | quadrado cinza escuro |
-| Gateway da UTI | `gateway` | losango azul |
-| Incubadora (`INC-01` … `INC-06`) | `incubadora` | quadrado grande |
-| Pulseira do neonato (`PUL-01` … `PUL-06`) | `pulseira` | círculo médio |
-| Sensores | `sensor` | círculo pequeno |
+| Servidor (posto de enfermagem) | `servidor` | círculo grande cinza escuro |
+| Gateway da UTI | `gateway` | círculo grande azul |
+| Incubadora (`INC-01` … `INC-06`) | `incubadora` | círculo grande (cor = status) |
+| Pulseira do neonato (`PUL-01` … `PUL-06`) | `pulseira` | círculo médio (cor = status) |
+| Sensores | `sensor` | círculo pequeno (cor = status) |
 
 **Sensores da incubadora:** `U` umidade (%), `T` temperatura do ar (°C), `R` ruído (dB).
 **Sensores da pulseira:** `T°` temperatura corporal (°C), `O₂` saturação de oxigênio (%), `FC` frequência cardíaca (bpm).
@@ -55,12 +55,12 @@ Incubadoras e pulseiras recebem o **pior status entre os seus sensores**. Basta 
 
 | Sensor | Faixa normal | Tolerância (alerta) |
 |---|---|---|
-| Umidade | 50 – 80 % | ± 5 % |
-| Temperatura incubadora | 36,0 – 37,5 °C | ± 0,5 °C |
-| Ruído | até 45 dB | + 10 dB |
+| Umidade relativa | 50 – 65 % | ± 5 % |
+| Temperatura incubadora | 32,0 – 34,0 °C | ± 0,5 °C |
+| Ruído | abaixo de 45 dB | + 10 dB |
 | Temperatura corporal | 36,5 – 37,5 °C | ± 0,5 °C |
-| SpO₂ | 90 – 100 % | − 5 % |
-| Frequência cardíaca | 100 – 160 bpm | ± 20 bpm |
+| SpO₂ (oxigenação) | 95 – 100 % | − 5 % |
+| Frequência cardíaca | 120 – 160 bpm | ± 20 bpm |
 
 > As faixas são valores de referência usados para a simulação acadêmica e não substituem protocolos clínicos.
 
@@ -116,7 +116,7 @@ Imprime um bloco por persona:
 ### `desenhar_grafo(G)`
 - desenha o contorno da planta (20 m × 12 m);
 - desenha as arestas por tipo de conexão, com estilos diferentes, e o rótulo de distância nas conexões Wi-Fi e cabo;
-- desenha os nós com formato por tipo e cor por status;
+- desenha todos os nós como círculos (representação clássica de grafo): o tamanho indica o tipo e a cor indica o status;
 - adiciona a legenda e salva em `grafo_uti.png`.
 
 ### Como adaptar
